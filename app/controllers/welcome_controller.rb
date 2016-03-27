@@ -7,11 +7,11 @@ class WelcomeController < ActionController::Base
     conn = OCI8.new('njiang/password@oracle.cise.ufl.edu:1521/orcl')
     
     @rows = []
-    cursor = conn.exec("select name from movie") do |row|
+    cursor = conn.exec("select pid from player") do |row|
       @rows << row.first
     end
 
-    cursor.close
-    conn.logoff
+    # cursor.close
+    # conn.logoff
   end
 end

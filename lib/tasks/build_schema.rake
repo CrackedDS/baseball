@@ -112,9 +112,8 @@ namespace :db do
         team_name varchar(255),
         stint int,
         games int,
-        games_started int,
         salary int,
-        constraint PK_STAT_YEAR PRIMARY KEY (season_year, pid, team_name),
+        constraint PK_STAT_YEAR PRIMARY KEY (season_year, pid, stint),
         constraint FK_STAT_YEAR_1 FOREIGN KEY (season_year) REFERENCES Season(year),
         constraint FK_STAT_YEAR_2 FOREIGN KEY (pid) REFERENCES Player(pid),
         constraint FK_STAT_YEAR_3 FOREIGN KEY (team_name, season_year) REFERENCES Team(name, season_year)
@@ -125,6 +124,7 @@ namespace :db do
       CREATE TABLE PitchYear (
         season_year int,
         pid varchar(255),
+        stint int,
         team_name varchar(255),
         wins int,
         losses int,
@@ -134,7 +134,7 @@ namespace :db do
         homeruns int,
         walks int,
         strikeouts int,
-        constraint PK_PITCH_YEAR PRIMARY KEY (season_year, pid, team_name),
+        constraint PK_PITCH_YEAR PRIMARY KEY (season_year, pid, stint),
         constraint FK_PITCH_YEAR_1 FOREIGN KEY (season_year) REFERENCES Season(year),
         constraint FK_PITCH_YEAR_2 FOREIGN KEY (pid) REFERENCES Player(pid),
         constraint FK_PITCH_YEAR_3 FOREIGN KEY (team_name, season_year) REFERENCES Team(name, season_year)
@@ -145,13 +145,14 @@ namespace :db do
       CREATE TABLE FieldYear (
         season_year int,
         pid varchar(255),
+        stint int,
         team_name varchar(255),
         putouts int,
         assists int,
         errors int,
-        double_players int,
+        double_plays int,
         zone_rating int,
-        constraint PK_FIELD_YEAR PRIMARY KEY (season_year, pid, team_name),
+        constraint PK_FIELD_YEAR PRIMARY KEY (season_year, pid, stint),
         constraint FK_FIELD_YEAR_1 FOREIGN KEY (season_year) REFERENCES Season(year),
         constraint FK_FIELD_YEAR_2 FOREIGN KEY (pid) REFERENCES Player(pid),
         constraint FK_FIELD_YEAR_3 FOREIGN KEY (team_name, season_year) REFERENCES Team(name, season_year)
@@ -162,6 +163,7 @@ namespace :db do
       CREATE TABLE BatYear (
         season_year int,
         pid varchar(255),
+        stint int,
         team_name varchar(255),
         singles int,
         doubles int,
@@ -171,7 +173,7 @@ namespace :db do
         rbi int,
         stolen_bases int,
         strikeouts int,
-        constraint PK_BAT_YEAR PRIMARY KEY (season_year, pid, team_name),
+        constraint PK_BAT_YEAR PRIMARY KEY (season_year, pid, stint),
         constraint FK_BAT_YEAR_1 FOREIGN KEY (season_year) REFERENCES Season(year),
         constraint FK_BAT_YEAR_2 FOREIGN KEY (pid) REFERENCES Player(pid),
         constraint FK_BAT_YEAR_3 FOREIGN KEY (team_name, season_year) REFERENCES Team(name, season_year)

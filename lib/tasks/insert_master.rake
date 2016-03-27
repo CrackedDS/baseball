@@ -1,6 +1,6 @@
 namespace :db do
   def load_team_files
-    $teams = read_and_parse("csv/teams.csv").map{|row| [row[2], row.to_h]}.to_h
+    $teams = read_and_parse("csv/teams.csv").map{|row| ["#{row[0]}#{row[2]}", row.to_h]}.to_h
     puts "\tTeams parsed"
     $franchises = read_and_parse("csv/teamsfranchises.csv").map{|row| [row[0], row.to_h]}.to_h
     puts "\tFranchises parsed"
@@ -114,10 +114,10 @@ namespace :db do
     $manager_year.each do |row|
       pid = row[0]
       m_year = row[1]
-      team_name = team_name(m_year["teamID"])
+      team_name = team_name("#{m_year["yearID"]}#{m_year["teamID"]}")
       query = %{
         INSERT INTO ManagerYear
-        (name, season_year, mid, inseason, games, wins, losses, rank) 
+        (team_name, season_year, mid, inseason, games, wins, losses, rank) 
         VALUES
         (
           #{str_or_null team_name},
@@ -126,7 +126,7 @@ namespace :db do
           #{str_or_null m_year["inseason"]},
           #{int_or_null m_year["G"]},
           #{int_or_null m_year["W"]},
-          #{int_or_null m_year["L"]}
+          #{int_or_null m_year["L"]},
           #{int_or_null m_year["rank"]}
         )
       }
@@ -134,7 +134,8 @@ namespace :db do
       begin
         $conn.exec query
       rescue
-        byebug
+        puts "\tFailed to insert manager year for #{team_name}"
+        next
       end
 
       manager_years_added += 1
