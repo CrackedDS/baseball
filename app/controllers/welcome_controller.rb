@@ -9,9 +9,16 @@ class WelcomeController < ActionController::Base
     @rows = []
     cursor = conn.exec("select pid from player") do |row|
       @rows << row.first
+
+      break if @rows.count == 10
     end
 
     # cursor.close
     # conn.logoff
   end
+
+  def search
+    byebug
+  end
+
 end

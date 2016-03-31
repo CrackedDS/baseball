@@ -21,7 +21,7 @@ namespace :db do
       end
     $pitching = read_and_parse("csv/pitching.csv").map(&:to_h)
     $batting = read_and_parse("csv/batting.csv").map(&:to_h)
-    $salaries = read_and_parse("csv/salaries.csv").map{|row| ["#{row[0]}#{row[1]}#{row[3]}", row.to_h]}.to_h
+    $salaries = read_and_parse("csv/salaries.csv").map{|row| ["#{row[0]}#{row[1]}#{row[3]}", row.to_h["salary"]]}.to_h
     $set = Set.new
     puts "\tStats parsed"
   end
@@ -32,6 +32,7 @@ namespace :db do
 
     $fielding.each do |hash|
       if !$set.include?(sy_key(hash))
+        sal_key = "#{hash["yearID"]}#{hash["teamID"]}#{hash["playerID"]}"
         query = %{
           INSERT INTO StatYear
           (season_year, pid, team_name, stint, games, salary)
@@ -42,7 +43,7 @@ namespace :db do
             #{str_or_null team_name(hash["yearID"] + hash["teamID"])},
             #{int_or_null hash["stint"]},
             #{int_or_null hash["G"]},
-            #{int_or_null $salaries[hash["yearID"] + hash["teamID"] + hash["playerID"]]}
+            #{int_or_null $salaries[sal_key]}
           )
         }
         begin
@@ -51,7 +52,7 @@ namespace :db do
           puts "\tFailed to insert stat year #{sy_key(hash)}"
           next
         end
-
+        puts ($salaries[hash["yearID"] + hash["teamID"] + hash["playerID"]])
         puts "\tInserted stat year #{sy_key(hash)}"
         sy_added += 1
       end
@@ -84,9 +85,149 @@ namespace :db do
       puts "\tInserted field year #{sy_key(hash)}"
       fielding_added += 1
     end
-    byebug
+
     commit
     puts "Added #{sy_added} stat years"
     puts "Added #{fielding_added} field years"
+  end
+
+  def insert_pitching
+    pitching_added = 0
+    sy_added = 0
+
+    $pitching.each do |hash|
+      if !$set.include?(sy_key(hash))
+        sal_key = "#{hash["yearID"]}#{hash["teamID"]}#{hash["playerID"]}"
+        query = %{
+          INSERT INTO StatYear
+          (season_year, pid, team_name, stint, games, salary)
+          VALUES
+          (
+            #{int_or_null hash["yearID"]},
+            #{str_or_null hash["playerID"]},
+            #{str_or_null team_name(hash["yearID"] + hash["teamID"])},
+            #{int_or_null hash["stint"]},
+            #{int_or_null hash["G"]},
+            #{int_or_null $salaries[sal_key]}
+          )
+        }
+
+        begin
+          $conn.exec query
+        rescue
+          byebug
+          puts "\tFailed to insert stat year #{sy_key(hash)}"
+          next
+        end
+        puts "\tInserted stat year #{sy_key(hash)}"
+        sy_added += 1
+      end
+
+
+      query = %{
+        INSERT INTO PitchYear
+        (season_year, pid, stint, team_name, wins, losses, saves, outs, shutouts, homeruns, walks, strikeouts)
+        VALUES
+        (
+          #{int_or_null hash["yearID"]},
+          #{str_or_null hash["playerID"]},
+          #{int_or_null hash["stint"]},
+          #{str_or_null team_name(hash["yearID"] + hash["teamID"])},
+          #{int_or_null hash["W"]},
+          #{int_or_null hash["L"]},
+          #{int_or_null hash["SV"]},
+          #{int_or_null hash["IPOuts"]},
+          #{int_or_null hash["SHO"]},
+          #{int_or_null hash["HR"]},
+          #{int_or_null hash["BB"]},
+          #{int_or_null hash["SO"]}
+        )
+      }
+
+      begin
+        $conn.exec query
+      rescue
+        byebug
+        puts "\tFailed to insert pitch year #{sy_key(hash)}"
+        next
+      end
+      puts "\tInserted pitch year #{sy_key(hash)}"
+      pitching_added += 1
+
+    end
+    byebug
+    commit
+    puts "Added #{sy_added} stat years"
+    puts "Added #{pitching_added} field years"
+  end
+
+
+  def insert_batting
+    batting_added = 0
+    sy_added = 0
+
+    $batting.each do |hash|
+      if !$set.include?(sy_key(hash))
+        sal_key = "#{hash["yearID"]}#{hash["teamID"]}#{hash["playerID"]}"
+        query = %{
+          INSERT INTO StatYear
+          (season_year, pid, team_name, stint, games, salary)
+          VALUES
+          (
+            #{int_or_null hash["yearID"]},
+            #{str_or_null hash["playerID"]},
+            #{str_or_null team_name(hash["yearID"] + hash["teamID"])},
+            #{int_or_null hash["stint"]},
+            #{int_or_null hash["G"]},
+            #{int_or_null $salaries[sal_key]}
+          )
+        }
+
+        begin
+          $conn.exec query
+        rescue
+          byebug
+          puts "\tFailed to insert stat year #{sy_key(hash)}"
+          next
+        end
+        puts "\tInserted stat year #{sy_key(hash)}"
+        sy_added += 1
+      end
+
+
+      query = %{
+        INSERT INTO BatYear
+        (season_year, pid, stint, team_name, singles, doubles, triples, home_runs, hits, rbi, stolen_bases, strikeouts)  
+        VALUES
+        (
+          #{int_or_null hash["yearID"]},
+          #{str_or_null hash["playerID"]},
+          #{int_or_null hash["stint"]},
+          #{str_or_null team_name(hash["yearID"] + hash["teamID"])},
+          #{int_or_null hash["H"]},
+          #{int_or_null hash["2B"]},
+          #{int_or_null hash["3B"]},
+          #{int_or_null hash["HR"]},
+          #{int_or_null hash["RBI"]},
+          #{int_or_null hash["HR"]},
+          #{int_or_null hash["SB"]},
+          #{int_or_null hash["SO"]}
+        )
+      }
+
+      begin
+        $conn.exec query
+      rescue
+        byebug
+        puts "\tFailed to insert bat year #{sy_key(hash)}"
+        next
+      end
+      puts "\tInserted bat year #{sy_key(hash)}"
+      batting_added += 1
+    end
+    byebug
+    commit
+    puts "Added #{sy_added} stat years"
+    puts "Added #{batting_added} bat years"
   end
 end
