@@ -1,6 +1,6 @@
 == README
 
-The application is based on Oracle SQL server as the database server and Ruby on the Rails at the front end.
+The application uses Oracle SQL server as the database server and Ruby on the Rails at the front end.
 
 ==Player Impact Analyzer
 
