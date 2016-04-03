@@ -136,7 +136,7 @@ namespace :db do
           #{int_or_null hash["W"]},
           #{int_or_null hash["L"]},
           #{int_or_null hash["SV"]},
-          #{int_or_null hash["IPOuts"]},
+          #{int_or_null hash["IPouts"]},
           #{int_or_null hash["SHO"]},
           #{int_or_null hash["HR"]},
           #{int_or_null hash["BB"]},

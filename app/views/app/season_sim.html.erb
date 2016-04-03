@@ -1,0 +1,26 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3>Season Simulation</h3>
+  </div>
+
+  <div class="panel-body centered">
+    <%= bootstrap_form_tag url: "login", method: "post" do |f| %>
+      <div class="row">
+        <div class="col-xs-6">
+          <%= f.select :season, [2010, 2011], { label: "Select season" } %>
+        </div>
+        <div class="col-xs-6">
+          <%= f.form_group :type, label: { text: "Simulation type" } do %>
+            <%= f.radio_button :type, 0, label: "Standings" %>
+            <%= f.radio_button :type, 1, label: "Playoffs" %>
+          <% end %>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <%= f.submit "Simulate" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

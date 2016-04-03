@@ -11,6 +11,9 @@ Rails.application.routes.draw do
 
   get "home" => "app#home"
   get "user_management" => "app#user_management"
+  get "add_team" => "app#add_team"
+  get "player_list" => "app#player_list"
+
   get "player_impact" => "app#player_impact"
   get "h2h_score" => "app#h2h_score"
   get "season_sim" => "app#season_sim"

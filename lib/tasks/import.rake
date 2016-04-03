@@ -25,6 +25,7 @@ namespace :db do
     insert_batting
     puts "Field years inserted successfully"
 
+    $conn.close
   end
 
   
