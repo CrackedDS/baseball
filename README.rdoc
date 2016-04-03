@@ -4,15 +4,21 @@ The application uses Oracle SQL server as the database server and Ruby on the Ra
 
 ==Player Impact Analyzer
 
-=Weights for each attributes:
+=Weights for each attributes in batyear table:
 
-Singles : 
-Doubles :
-Triples :
-Home runs:
-Stolen bases:
-Hits:
-Strikeouts:
+total no of game n : 243.36
+Singles : 1 / n
+Doubles : 2/n
+Triples : 3/n
+Home runs:4/n
+Stolen bases: 2/n
+Hits: .5/n
+Strikeouts: -3/n 
+rbi : 4/n 
+stolenbase : 2/n
+
+average : .48 
+
 
 
 
