@@ -11,7 +11,7 @@
     <div class="container-fluid">
       <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
-        <a class="navbar-brand" href="#">BaseballGuru</a>
+        <a class="navbar-brand" href="<%= home_url %>">BaseballGuru</a>
       </div>
 
       <ul class="nav navbar-nav navbar-right">
@@ -23,31 +23,29 @@
   
   <div id="sidebar-wrapper">
     <ul class="sidebar-nav">
-      <li class="sidebar-brand">
-        <a href="#">
-          Start Bootstrap
-        </a>
+      <li>
+        <a href="<%= user_management_url %>">User Management</a>
       </li>
       <li>
-        <a href="#">Dashboard</a>
+        <a href="<%= player_impact_url %>">Player Impact Analyser</a>
       </li>
       <li>
-        <a href="#">Shortcuts</a>
+        <a href="<%= h2h_score_url %>">H2H Score Prediction</a>
       </li>
       <li>
-        <a href="#">Overview</a>
+        <a href="<%= season_sim_url %>">Season Simulation</a>
       </li>
       <li>
-        <a href="#">Events</a>
+        <a href="<%= player_value_url %>">Player Value Analyser</a>
       </li>
       <li>
-        <a href="#">About</a>
+        <a href="<%= historical_player_url %>">Historical Player Comparison</a>
       </li>
       <li>
-        <a href="#">Services</a>
+        <a href="<%= historical_team_url %>">Historical Team Comparison</a>
       </li>
       <li>
-        <a href="#">Contact</a>
+        <a href="<%= manager_evaluation_url %>">Manager Evaluation</a>
       </li>
     </ul>
   </div>

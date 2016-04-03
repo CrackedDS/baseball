@@ -10,6 +10,14 @@ Rails.application.routes.draw do
   get "logout" => "sessions#logout"
 
   get "home" => "app#home"
+  get "user_management" => "app#user_management"
+  get "player_impact" => "app#player_impact"
+  get "h2h_score" => "app#h2h_score"
+  get "season_sim" => "app#season_sim"
+  get "player_value" => "app#player_value"
+  get "historical_player" => "app#historical_player"
+  get "historical_team" => "app#historical_team"
+  get "manager_evaluation" => "app#manager_evaluation"
 
 
   # Example of regular route:

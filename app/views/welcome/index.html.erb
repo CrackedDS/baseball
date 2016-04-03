@@ -1,27 +1,32 @@
-<div class="row centered">
-  <div class="col-xs-10 col-xs-offset-1">
+<br>
+<div class="panel panel-info centered">
+  <div class="panel-heading">
     <h1>Welcome To Baseball Guru</h1>
   </div>
-</div>
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-xs-4 col-xs-offset-1">
+        <h3> Login </h3>
+        <%= bootstrap_form_tag url: "login", method: "post" do |f| %>
+          <%= f.email_field :email %>
+          <%= f.password_field :password %>
+          <%= f.submit "Login" %>
+        <% end %>
 
-<div class="row centered">
-  <div class="col-xs-4 col-xs-offset-1">
-    <h3> Login </h3>
-    <%= bootstrap_form_tag url: "login", method: "post" do |f| %>
-      <%= f.email_field :email %>
-      <%= f.password_field :password %>
-      <%= f.submit "Login" %>
-    <% end %>
+      </div>
+
+      <div class="col-xs-4 col-xs-offset-2">
+        <h3> Register </h3>
+        <%= bootstrap_form_tag url: "register", method: "post" do |f| %>
+          <%= f.email_field :email %>
+          <%= f.password_field :password %>
+          <%= f.submit "Register" %>
+        <% end %>
+      </div>
+    </div>
 
   </div>
-
-  <div class="col-xs-4 col-xs-offset-2">
-    <h3> Register </h3>
-    <%= bootstrap_form_tag url: "register", method: "post" do |f| %>
-      <%= f.email_field :email %>
-      <%= f.password_field :password %>
-      <%= f.submit "Register" %>
-    <% end %>
-  </div>
 </div>
+
+
 
