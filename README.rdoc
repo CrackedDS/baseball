@@ -6,18 +6,35 @@ The application uses Oracle SQL server as the database server and Ruby on the Ra
 
 =Weights for each attributes in batyear table:
 
-total no of game n : 243.36
-Singles : 1 / n
-Doubles : 2/n
-Triples : 3/n
-Home runs:4/n
-Stolen bases: 2/n
-Hits: .5/n
-Strikeouts: -3/n 
-rbi : 4/n 
-stolenbase : 2/n
+##total no of game n : 243.36
+*Singles : 1 / n
+*Doubles : 2/n
+*Triples : 3/n
+*Home runs:4/n
+*Stolen bases: 2/n
+*Hits: .5/n
+*Strikeouts: -3/n 
+*rbi : 4/n 
+*stolenbase : 2/n
+*average : .48 
 
-average : .48 
+Weight for each attributes for fielding table:
+
+putouts : 1/n 
+assists : 1.5/n
+errors : -2/n
+double_plays : 3/n
+average : 4.88
+
+Weight for each attributes for Pitching Table:
+
+outs: 1/n
+shutouts : 5/n
+homeruns : -2/n
+walks : -1/n
+strikeouts: 1/n 
+
+average: 1.18
 
 
 
