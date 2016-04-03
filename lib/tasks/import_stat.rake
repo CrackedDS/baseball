@@ -52,7 +52,7 @@ namespace :db do
           puts "\tFailed to insert stat year #{sy_key(hash)}"
           next
         end
-        puts ($salaries[hash["yearID"] + hash["teamID"] + hash["playerID"]])
+        $set.add(sy_key(hash))
         puts "\tInserted stat year #{sy_key(hash)}"
         sy_added += 1
       end
@@ -115,10 +115,10 @@ namespace :db do
         begin
           $conn.exec query
         rescue
-          byebug
           puts "\tFailed to insert stat year #{sy_key(hash)}"
           next
         end
+        $set.add(sy_key(hash))
         puts "\tInserted stat year #{sy_key(hash)}"
         sy_added += 1
       end
@@ -155,7 +155,6 @@ namespace :db do
       pitching_added += 1
 
     end
-    byebug
     commit
     puts "Added #{sy_added} stat years"
     puts "Added #{pitching_added} field years"
@@ -186,10 +185,10 @@ namespace :db do
         begin
           $conn.exec query
         rescue
-          byebug
           puts "\tFailed to insert stat year #{sy_key(hash)}"
           next
         end
+        $set.add(sy_key(hash))
         puts "\tInserted stat year #{sy_key(hash)}"
         sy_added += 1
       end
@@ -225,7 +224,6 @@ namespace :db do
       puts "\tInserted bat year #{sy_key(hash)}"
       batting_added += 1
     end
-    byebug
     commit
     puts "Added #{sy_added} stat years"
     puts "Added #{batting_added} bat years"

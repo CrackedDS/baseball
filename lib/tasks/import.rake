@@ -8,17 +8,17 @@ namespace :db do
     load_team_files
     load_stat_files
 
-    # build_schema
-    # puts "Schema built successfully"
+    build_schema
+    puts "Schema built successfully"
 
-    # insert_teams
-    # puts "Teams inserted successfully"
+    insert_teams
+    puts "Teams inserted successfully"
 
-    # insert_players_and_managers
-    # puts "Master inserted successfully"
+    insert_players_and_managers
+    puts "Master inserted successfully"
 
-    # insert_manager_years
-    # puts "Manager years inserted successfully"
+    insert_manager_years
+    puts "Manager years inserted successfully"
 
     insert_fielding
     insert_pitching

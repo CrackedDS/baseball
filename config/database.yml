@@ -11,12 +11,7 @@ default: &default
 
 development:
   <<: *default
-  adapter: oracle_enhanced
-  host: oracle.cise.ufl.edu
-  port: 1521
-  database: orcl
-  username: njiang
-  password: password
+  database: baseball_development
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".

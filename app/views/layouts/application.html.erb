@@ -7,8 +7,53 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
+  <nav class="navbar navbar-default">
+    <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">BaseballGuru</a>
+      </div>
 
-<%= yield %>
+      <ul class="nav navbar-nav navbar-right">
+        <li><a href="<%= logout_url %>">Logout</a></li>
+      </ul>
 
+    </div><!-- /.container-fluid -->
+  </nav>
+  
+  <div id="sidebar-wrapper">
+    <ul class="sidebar-nav">
+      <li class="sidebar-brand">
+        <a href="#">
+          Start Bootstrap
+        </a>
+      </li>
+      <li>
+        <a href="#">Dashboard</a>
+      </li>
+      <li>
+        <a href="#">Shortcuts</a>
+      </li>
+      <li>
+        <a href="#">Overview</a>
+      </li>
+      <li>
+        <a href="#">Events</a>
+      </li>
+      <li>
+        <a href="#">About</a>
+      </li>
+      <li>
+        <a href="#">Services</a>
+      </li>
+      <li>
+        <a href="#">Contact</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="container-fluid" id="main-container">
+    <%= yield %>
+  </div>
 </body>
 </html>
