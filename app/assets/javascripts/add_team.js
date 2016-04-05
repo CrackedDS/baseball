@@ -1,6 +1,6 @@
 $(document).on("page:load ready", function() {
 
-  $("#add_team_player").autocomplete({
+  $("#player_name").autocomplete({
     source: function(request, response) {
       $.ajax({
         url: "player_list",
@@ -15,7 +15,8 @@ $(document).on("page:load ready", function() {
     },
     minLength: 3,
     select: function(event, ui) {
-        $('#add_team_player').val(ui.item.label);
+        $('#player_name').val("");
+        $('#_selected_players').append("<option selected value=" + ui.item.value + ">" + ui.item.label + "</option>")
         return false; // Prevent the widget from inserting the value.
     },
     change: function (event, ui) {
@@ -23,7 +24,7 @@ $(document).on("page:load ready", function() {
           //http://api.jqueryui.com/autocomplete/#event-change -
           // The item selected from the menu, if any. Otherwise the property is null
           //so clear the item for force selection
-          $("#add_team_player").val("");
+          $("#player_name").val("");
       }
     }
   })

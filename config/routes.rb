@@ -10,9 +10,12 @@ Rails.application.routes.draw do
   get "logout" => "sessions#logout"
 
   get "home" => "app#home"
-  get "user_management" => "app#user_management"
-  get "add_team" => "app#add_team"
-  get "player_list" => "app#player_list"
+
+
+  get "user_management" => "user_management#user_management"
+  get "add_team" => "user_management#add_team"
+  get "player_list" => "user_management#player_list"
+  post "create_team" => "user_management#create_team"
 
   get "player_impact" => "app#player_impact"
   get "h2h_score" => "app#h2h_score"

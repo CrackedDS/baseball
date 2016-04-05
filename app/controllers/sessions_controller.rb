@@ -6,6 +6,8 @@ class SessionsController < ApplicationController
       @row = row
     end
 
+    conn.logoff
+
     if @row
       session[:user_id] = @row.first
       flash[:notice] = "Welcome back!"
