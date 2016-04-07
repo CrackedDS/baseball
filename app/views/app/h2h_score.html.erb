@@ -9,11 +9,11 @@
       <div class="row centered">
         <div class="row centered">
           <div class="col-xs-6">
-            <%= f.select :team1, @teams, { label: "Team 1:" } %>
+            <%= f.select :team1, @teams, { label: "Team 1:", :prompt => "Select a team"} %>
           </div>
 
           <div class="col-xs-6">
-            <%= f.select :team2, @teams, { label: "Team 2:" } %>
+            <%= f.select :team2, @teams, { label: "Team 2:", :prompt => "Select a team" } %>
           </div>
         </div>
       </div>

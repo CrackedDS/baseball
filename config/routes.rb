@@ -4,19 +4,24 @@ Rails.application.routes.draw do
 
   # You can have the root of your site routed with "root"
   root 'welcome#index'
+
+  # registration
   post "login" => "sessions#login"
   post "register" => "users#register"
-  
   get "logout" => "sessions#logout"
 
   get "home" => "app#home"
 
+  # ajax requests
   get "player_list" => "ajax#player_list"
+  get "player_list_team" => "ajax#player_list_team"
+  get "manager_list_team" => "ajax#manager_list_team"
 
+  # user management
   get "user_management" => "user_management#user_management"
   get "add_team" => "user_management#add_team"
-  
   post "create_team" => "user_management#create_team"
+
 
   get "player_impact" => "app#player_impact"
   get "h2h_score" => "app#h2h_score"
