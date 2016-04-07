@@ -1,0 +1,49 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3> Player Value Analyzer </h3>
+  </div>
+
+  <div class="panel-body">
+    <%= bootstrap_form_tag url: "login", method: "post" do |f| %>
+      <div class="row centered">
+        <%= f.form_group :type, label: { text: "Player type" } do %>
+          <%= f.radio_button :type, 0, label: "Pitchers" %>
+          <%= f.radio_button :type, 1, label: "Batters" %>
+          <%= f.radio_button :type, 2, label: "Fielders" %>
+        <% end %>
+      </div>
+
+      <div class="row centered">
+        <div class="row centered">
+          <div class="col-xs-6">
+            <%= f.select :team1, [], { label: "Team 1:" } %>
+          </div>
+
+          <div class="col-xs-6">
+            <%= f.select :team2, [], { label: "Team 2:" } %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row centered">
+        <div class="row centered">
+          <div class="col-xs-6">
+            <%= f.select :player1, [], { label: "Player 1:" } %>
+          </div>
+
+          <div class="col-xs-6">
+            <%= f.select :player, [], { label: "Player 2:" } %>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row centered">
+        <div class="col-xs-12">
+          <%= f.submit "Analyze" %>
+        </div>
+      </div>
+      
+    <% end %>
+
+  </div>
+</div>

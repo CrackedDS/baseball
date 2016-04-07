@@ -1,15 +1,13 @@
 class SessionsController < ApplicationController
   def login
-    conn = OCI8.new('njiang/password@oracle.cise.ufl.edu:1521/orcl')
+    query = %{
+      SELECT * FROM appuser WHERE email = :1 AND password = :2
+    }
+    
+    @row = exec(query, params["email"], params["password"])
 
-    cursor = conn.exec("select * from appuser where email = :1 and password = :2", params["email"], params["password"]) do |row|
-      @row = row
-    end
-
-    conn.logoff
-
-    if @row
-      session[:user_id] = @row.first
+    if @row.size > 0
+      session[:user_id] = @row.first.first
       flash[:notice] = "Welcome back!"
       redirect_to home_url
     else

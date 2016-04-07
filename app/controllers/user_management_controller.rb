@@ -26,40 +26,16 @@ class UserManagementController < ApplicationController
     conn.logoff
   end
 
-  def player_list
-    conn = OCI8.new('njiang/password@oracle.cise.ufl.edu:1521/orcl')
-    @players = []
-    query = %{
-      SELECT * from player 
-      WHERE CONCAT(lower(fname), CONCAT(' ', lower(lname))) like :1 
-    }
-    cursor = conn.exec(query, "%" + params[:term].downcase + "%") do |row|
-      @players << {
-        label: "#{row[4]} #{row[5]}",
-        value: row[0]
-      }
-    end
-
-    conn.logoff
-
-    respond_to do |format|
-      format.json { render json: {players: @players } }
-    end
-  end
-
-
   def add_team; end
 
   def create_team
-    conn = OCI8.new('njiang/password@oracle.cise.ufl.edu:1521/orcl')
-
     query = %{
       INSERT INTO UserTeam
       (user_email, name)
       VALUES
       (:1, :2)
     }
-    conn.exec(query, session[:user_id], params[:team_name])
+    exec_commit(query, session[:user_id], params[:team_name])
 
     params["selected_players"].uniq.each do |player|
       next if player == ""
@@ -71,11 +47,9 @@ class UserManagementController < ApplicationController
         (:1, :2, :3)
       }
 
-      conn.exec(query, session[:user_id], params[:team_name], player)
+      exec_commit(query, session[:user_id], params[:team_name], player)
     end
 
-    conn.exec("commit")
-    conn.logoff
     redirect_to user_management_url
   end
 end

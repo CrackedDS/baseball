@@ -9,7 +9,12 @@ class AppController < ApplicationController
 
 
   def h2h_score
+    query = %{
+      SELECT DISTINCT name FROM Team
+    }
 
+    @teams = exec(query)
+    @teams.map!(&:first).sort!
   end
 
   def season_sim

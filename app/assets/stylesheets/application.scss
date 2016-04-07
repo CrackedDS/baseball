@@ -13,6 +13,7 @@
  *= require_tree .
  *= require_self
  *= require jquery-ui
+ *= require dataTables/bootstrap/3/jquery.dataTables.bootstrap
  */
 
 @import "bootstrap-sprockets";
@@ -34,4 +35,11 @@ form input {
 #main-container {
   margin-top: 25px;
   margin-left: 250px;
+}
+
+body { padding-top: 50px; }
+
+.panel-body .row{
+  padding-left: 15px;
+  padding-right: 15px;
 }

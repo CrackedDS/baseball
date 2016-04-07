@@ -1,0 +1,41 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3> Manager Evaluation </h3>
+  </div>
+
+  <div class="panel-body">
+    <%= bootstrap_form_tag url: "login", method: "post" do |f| %>
+      <div class="row centered">
+        <div class="row centered">
+          <div class="col-xs-6">
+            <%= f.select :team1, [], { label: "Team 1:" } %>
+          </div>
+
+          <div class="col-xs-6">
+            <%= f.select :team2, [], { label: "Team 2:" } %>
+          </div>
+        </div>
+      </div>
+
+      <div class="row centered">
+        <div class="row centered">
+          <div class="col-xs-6">
+            <%= f.select :player1, [], { label: "Manager 1:" } %>
+          </div>
+
+          <div class="col-xs-6">
+            <%= f.select :player, [], { label: "Manager 2:" } %>
+          </div>
+        </div>
+      </div>
+      
+      <div class="row centered">
+        <div class="col-xs-12">
+          <%= f.submit "Analyze" %>
+        </div>
+      </div>
+      
+    <% end %>
+
+  </div>
+</div>

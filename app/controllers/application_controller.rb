@@ -14,6 +14,26 @@ class ApplicationController < ActionController::Base
       return false
     end
   end
+
+
+  def exec(query, *args)
+    conn = OCI8.new('njiang/password@oracle.cise.ufl.edu:1521/orcl')
+    results = []
+
+    conn.exec(query, *args) do |row|
+      results << row
+    end
+
+    conn.logoff
+    return results
+  end
+
+  def exec_commit(query, *args)
+    conn = OCI8.new('njiang/password@oracle.cise.ufl.edu:1521/orcl')
+    conn.exec(query, *args)
+    conn.exec("COMMIT")
+    conn.logoff
+  end
 end
 
 

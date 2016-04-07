@@ -1,18 +1,22 @@
 class UsersController < ApplicationController
   
   def register
-    conn = OCI8.new('njiang/password@oracle.cise.ufl.edu:1521/orcl')
+    query = %{
+      SELECT * FROM AppUser WHERE email = :1 
+    }
+    
+    @row = exec(query, params["email"])
 
-    cursor = conn.exec("select * from appuser where email = :1", params["email"]) do |row|
-      @row = row
-    end
-
-    if @row
+    if @row.length > 0
       flash[:alert] = "E-mail has already been used. Please try another"
       redirect_to root_url
     else
-      conn.exec("INSERT INTO AppUser (email, password) VALUES (:1, :2)", params["email"], params["password"])
-      conn.exec("commit")
+      query = %{
+        INSERT INTO AppUser (email, password) VALUES (:1, :2)
+      }
+      exec_commit(query, params["email"], params["password"])
+
+      session[:user_id] = params["email"]
       redirect_to home_url
     end
   end

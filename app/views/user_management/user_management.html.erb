@@ -13,18 +13,22 @@
         <% if @teams.size > 0 %>
           <% @teams.each do |team| %>
             <h3 class="centered"> <%= team.first %> </h3>
-            <table class="table table-bordered">
-              <tr>
-                <th>Player Name </th>
-                <th>Games Played</th>
-              </tr>
-
-              <% team.second.each do |row| %>
+            <table class="table table-bordered datatable">
+              <thead>
                 <tr>
-                  <td><%= "#{row[0]} #{row[1]}" %></td>
-                  <td><%= row[3].to_i %></td>
+                  <th>Player Name </th>
+                  <th>Games Played</th>
                 </tr>
-              <% end %>
+              </thead>
+
+              <tbody>
+                <% team.second.each do |row| %>
+                  <tr>
+                    <td><%= "#{row[0]} #{row[1]}" %></td>
+                    <td><%= row[3].to_i %></td>
+                  </tr>
+                <% end %>
+              </tbody>
             </table>
           <% end %>
         <% else %>
@@ -32,5 +36,6 @@
         <% end %>
       </div>
     </div>
+
   </div>
 </div>

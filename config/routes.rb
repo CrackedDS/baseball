@@ -11,10 +11,11 @@ Rails.application.routes.draw do
 
   get "home" => "app#home"
 
+  get "player_list" => "ajax#player_list"
 
   get "user_management" => "user_management#user_management"
   get "add_team" => "user_management#add_team"
-  get "player_list" => "user_management#player_list"
+  
   post "create_team" => "user_management#create_team"
 
   get "player_impact" => "app#player_impact"
