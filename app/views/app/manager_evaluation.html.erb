@@ -6,26 +6,22 @@
   <div class="panel-body">
     <%= bootstrap_form_tag url: "login", method: "post" do |f| %>
       <div class="row centered">
-        <div class="row centered">
-          <div class="col-xs-6">
-            <%= f.select :team1, [], { label: "Team 1:" } %>
-          </div>
+        <div class="col-xs-6">
+          <%= f.select :team1, @teams, { label: "Team 1:", :prompt => "Select a team" }, { class: "team-m-select-1" } %>
+        </div>
 
-          <div class="col-xs-6">
-            <%= f.select :team2, [], { label: "Team 2:" } %>
-          </div>
+        <div class="col-xs-6">
+          <%= f.select :team2, @teams, { label: "Team 2:", :prompt => "Select a team" }, { class: "team-m-select-2" } %>
         </div>
       </div>
 
       <div class="row centered">
-        <div class="row centered">
-          <div class="col-xs-6">
-            <%= f.select :player1, [], { label: "Manager 1:" } %>
-          </div>
+        <div class="col-xs-6">
+          <%= f.select :manager1, [], { label: "Manager 1:" }, { class: "manager-select-1" } %>
+        </div>
 
-          <div class="col-xs-6">
-            <%= f.select :player, [], { label: "Manager 2:" } %>
-          </div>
+        <div class="col-xs-6">
+          <%= f.select :manager2, [], { label: "Manager 2:" }, { class: "manager-select-2" } %>
         </div>
       </div>
       

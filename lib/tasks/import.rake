@@ -4,9 +4,10 @@ namespace :db do
   desc "Add Courses to Database"
   task :import => :environment do |t, args|
     $conn = OCI8.new('njiang/password@oracle.cise.ufl.edu:1521/orcl')
-    load_master_files
-    load_team_files
-    load_stat_files
+    byebug
+    # load_master_files
+    # load_team_files
+    # load_stat_files
 
     build_schema
     puts "Schema built successfully"

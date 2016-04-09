@@ -4,7 +4,12 @@ class AppController < ApplicationController
   def home; end
 
   def player_impact
+    query = %{
+      SELECT DISTINCT name FROM Team
+    }
 
+    @teams = exec(query)
+    @teams.map!(&:first).sort!
   end
 
 
@@ -22,7 +27,12 @@ class AppController < ApplicationController
   end
 
   def player_value
+    query = %{
+      SELECT DISTINCT name FROM Team
+    }
 
+    @teams = exec(query)
+    @teams.map!(&:first).sort!
   end
 
   def historical_player
@@ -34,7 +44,12 @@ class AppController < ApplicationController
   end
 
   def manager_evaluation
+    query = %{
+      SELECT DISTINCT name FROM Team
+    }
 
+    @teams = exec(query)
+    @teams.map!(&:first).sort!
   end
 
 end

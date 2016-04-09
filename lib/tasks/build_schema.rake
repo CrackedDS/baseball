@@ -1,5 +1,12 @@
 namespace :db do
   def build_schema
+    begin
+      $conn.exec %{
+        DROP INDEX statyear_teamname
+      }
+    rescue
+    end
+
     tables = []
     cursor = $conn.exec %{
       SELECT 'DROP TABLE ' || table_name || ' CASCADE CONSTRAINTS' FROM user_tables 
@@ -179,6 +186,10 @@ namespace :db do
         constraint FK_BAT_YEAR_3 FOREIGN KEY (team_name, season_year) REFERENCES Team(name, season_year)
       )
     }
+
+    $conn.exec %{
+      "CREATE INDEX statyear_teamname ON StatYear(team_name)"
+    %}
 
   end
 
