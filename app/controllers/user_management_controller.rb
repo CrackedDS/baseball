@@ -18,10 +18,7 @@ class UserManagementController < ApplicationController
       GROUP BY Player.fname, Player.lname, UserTeam.name
     }
 
-    cursor = conn.exec(query, session[:user_id]) do |row|
-      @teams << row
-    end
-    @teams = @teams.group_by{|row| row[2]}
+    @teams = exec(query, session[:user_id]).results.group_by{|row| row[2]}
     
     conn.logoff
   end

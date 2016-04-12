@@ -18,18 +18,23 @@ class ApplicationController < ActionController::Base
 
   def exec(query, *args)
     conn = OCI8.new('njiang/password@oracle.cise.ufl.edu:1521/orcl')
-    results = []
+    result = Result.new
+    result.results = []
 
     begin
-      conn.exec(query, *args) do |row|
-        results << row
+      cursor = conn.exec(query, *args)
+      result.columns = cursor.get_col_names
+
+      while r = cursor.fetch()
+        result.results << r
       end
-    rescue e
+
+    rescue => e
       puts "QUERY ERROR: #{t.to_s}"
     ensure
       conn.logoff
     end
-    return results
+    return result
   end
 
   def exec_commit(query, *args)
@@ -37,7 +42,7 @@ class ApplicationController < ActionController::Base
     begin
       conn.exec(query, *args)
       conn.exec("COMMIT")
-    rescue e
+    rescue => e
       puts "QUERY ERROR: #{t.to_s}"
     ensure
       conn.logoff

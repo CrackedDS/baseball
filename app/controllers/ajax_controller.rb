@@ -28,7 +28,7 @@ class AjaxController < ApplicationController
       INNER JOIN StatYear on player.pid = StatYear.pid
       WHERE StatYear.team_name = :1
     }
-    @players = exec(query, params[:term])
+    @players = exec(query, params[:term]).results
     @players.map! do |player|
       {
         label: "#{player[0]} #{player[1]}",
@@ -47,7 +47,7 @@ class AjaxController < ApplicationController
       INNER JOIN ManagerYear on manager.mid = ManagerYear.mid
       WHERE ManagerYear.team_name = :1
     }
-    @managers = exec(query, params[:term])
+    @managers = exec(query, params[:term]).results
     @managers.map! do |manager|
       {
         label: "#{manager[0]} #{manager[1]}",

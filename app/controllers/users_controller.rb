@@ -5,7 +5,7 @@ class UsersController < ApplicationController
       SELECT * FROM AppUser WHERE email = :1 
     }
     
-    @row = exec(query, params["email"])
+    @row = exec(query, params["email"]).results
 
     if @row.length > 0
       flash[:alert] = "E-mail has already been used. Please try another"

@@ -2,13 +2,26 @@ class AppController < ApplicationController
   before_filter :authenticate_user
 
   def home; end
+  def test
+    res = exec(%{
+select avg(sing) singles, avg(doub) doubles, avg(tri) triples,avg(rbi) rbi , avg(stol) stolenbases, avg(hit) hits , avg(strike) strikeouts, avg(hmruns) homeruns from(
+select PID,sum(singles) sing, sum(doubles) doub, sum(triples) tri, sum (rbi) rbi, sum (stolen_bases) stol , sum(hits) hit, sum(home_runs) hmruns,sum(strikeouts) strike  from BATYEAR 
+group by PID) union
+
+select avg(sing) singles, avg(doub) doubles, avg(tri) triples,avg(rbi) rbi , avg(stol) stolenbases, avg(hit) hits , avg(strike) strikeouts, avg(hmruns) homeruns from(
+select PID,sum(singles) sing, sum(doubles) doub, sum(triples) tri, sum (rbi) rbi, sum (stolen_bases) stol , sum(hits) hit, sum(home_runs) hmruns,sum(strikeouts) strike  from BATYEAR
+group by PID having PID='adamsgl01')
+      })
+
+    byebug
+  end
 
   def player_impact
     query = %{
       SELECT DISTINCT name FROM Team
     }
 
-    @teams = exec(query)
+    @teams = exec(query).results
     @teams.map!(&:first).sort!
   end
 
@@ -18,7 +31,7 @@ class AppController < ApplicationController
       SELECT DISTINCT name FROM Team
     }
 
-    @teams = exec(query)
+    @teams = exec(query).results
     @teams.map!(&:first).sort!
   end
 
@@ -31,7 +44,7 @@ class AppController < ApplicationController
       SELECT DISTINCT name FROM Team
     }
 
-    @teams = exec(query)
+    @teams = exec(query).results
     @teams.map!(&:first).sort!
   end
 
@@ -48,7 +61,7 @@ class AppController < ApplicationController
       SELECT DISTINCT name FROM Team
     }
 
-    @teams = exec(query)
+    @teams = exec(query).results
     @teams.map!(&:first).sort!
   end
 

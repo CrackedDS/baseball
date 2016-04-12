@@ -4,7 +4,7 @@ class SessionsController < ApplicationController
       SELECT * FROM appuser WHERE email = :1 AND password = :2
     }
     
-    @row = exec(query, params["email"], params["password"])
+    @row = exec(query, params["email"], params["password"]).results
 
     if @row.size > 0
       session[:user_id] = @row.first.first

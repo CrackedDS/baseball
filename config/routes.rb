@@ -31,6 +31,8 @@ Rails.application.routes.draw do
   get "historical_team" => "app#historical_team"
   get "manager_evaluation" => "app#manager_evaluation"
 
+  get "test" => "app#test"
+
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

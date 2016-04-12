@@ -188,8 +188,8 @@ namespace :db do
     }
 
     $conn.exec %{
-      "CREATE INDEX statyear_teamname ON StatYear(team_name)"
-    %}
+      CREATE INDEX statyear_teamname ON StatYear(team_name)
+    }
 
   end
 
