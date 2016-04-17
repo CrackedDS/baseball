@@ -98,43 +98,53 @@ group by PID having PID='adamsgl01')
 
   def h2h_score_results
     query = %{
-      select (team_bat - team_field1 - team_pitch1), (team_bat1 - team_field - team_pitch)
+      select team1, team2, score_low, round(score_low + abs(teamlow_chance - teamhigh_chance)) as score_high, (case when greatest(teamhigh_chance, teamlow_chance) = teamhigh_chance then bigger else smaller end) as winner
       from
-        (select avg(bat_stat) as team_bat
+        (select team1, team2, (least(team1_stat, team2_stat) * dbms_random.value()) as teamlow_chance, (greatest(team1_stat, team2_stat) * dbms_random.value(0,0.5)) as teamhigh_chance,  (round(dbms_random.value() * 8) + 1) as score_low, (case when greatest(team1_stat, team2_stat) = team1_stat then team1 else team2 end) as bigger, (case when least(team1_stat, team2_stat) = team1_stat then team1 else team2 end) as smaller
         from
-          (select ((singles + (2 * doubles) + (3 * triples) + (4 * rbi) + (2 * stolen_bases) + (0.5 * hits) - (3 * strikeouts) + (4 * home_runs)) / games) as bat_stat
-          from BATYEAR natural join statyear
-          WHERE TEAM_NAME='#{params[:team1]}' and SEASON_YEAR='#{params[:year1]}')),
-        (select avg(field_stat) as team_field
-        from
-          (select ((putouts + (1.5 * assists) - (2 * errors) + (3 * double_plays)) / games) as field_stat
-          from FIELDYEAR natural join statyear
-          WHERE TEAM_NAME='#{params[:team1]}' and SEASON_YEAR='#{params[:year1]}')),
-        (select avg(pitch_stat) as team_pitch
-        from
-          (select ((outs + (5 * shutouts) - (2 * homeruns) - walks + strikeouts) / games) as pitch_stat
-          from PITCHYEAR natural join statyear
-          WHERE TEAM_NAME='#{params[:team1]}' and SEASON_YEAR='#{params[:year1]}')),
-        (select avg(bat_stat) as team_bat1
-        from
-          (select ((singles + (2 * doubles) + (3 * triples) + (4 * rbi) + (2 * stolen_bases) + (0.5 * hits) - (3 * strikeouts) + (4 * home_runs)) / games) as bat_stat
-          from BATYEAR natural join statyear
-          WHERE TEAM_NAME='#{params[:team2]}' and SEASON_YEAR='#{params[:year2]}')),
-        (select avg(field_stat) as team_field1
-        from
-          (select ((putouts + (1.5 * assists) - (2 * errors) + (3 * double_plays)) / games) as field_stat
-          from FIELDYEAR natural join statyear
-          WHERE TEAM_NAME='#{params[:team2]}' and SEASON_YEAR='#{params[:year2]}')),
-        (select avg(pitch_stat) as team_pitch1
-        from
-          (select ((outs + (5 * shutouts) - (2 * homeruns) - walks + strikeouts) / games) as pitch_stat
-          from PITCHYEAR natural join statyear
-          WHERE TEAM_NAME='#{params[:team2]}' and SEASON_YEAR='#{params[:year2]}'))
+          (select team1, team2, (team_bat - team_field1 - team_pitch1) as team1_stat, (team_bat1 - team_field - team_pitch) as team2_stat
+          from
+            (select team_name as team1, avg(bat_stat) as team_bat
+            from
+              (select team_name, ((singles + (2 * doubles) + (3 * triples) + (4 * rbi) + (2 * stolen_bases) + (0.5 * hits) - (3 * strikeouts) + (4 * home_runs)) / games) as bat_stat
+              from BATYEAR natural join statyear
+              WHERE TEAM_NAME='#{params[:team1]}' and SEASON_YEAR='#{params[:year1]}')
+            group by team_name),
+            (select avg(field_stat) as team_field
+            from
+              (select ((putouts + (1.5 * assists) - (2 * errors) + (3 * double_plays)) / games) as field_stat
+              from FIELDYEAR natural join statyear
+              WHERE TEAM_NAME='#{params[:team1]}' and SEASON_YEAR='#{params[:year1]}')),
+            (select avg(pitch_stat) as team_pitch
+            from
+              (select ((outs + (5 * shutouts) - (2 * homeruns) - walks + strikeouts) / games) as pitch_stat
+              from PITCHYEAR natural join statyear
+              WHERE TEAM_NAME='#{params[:team1]}' and SEASON_YEAR='#{params[:year1]}')),
+            (select team_name as team2, avg(bat_stat) as team_bat1
+            from
+              (select team_name, ((singles + (2 * doubles) + (3 * triples) + (4 * rbi) + (2 * stolen_bases) + (0.5 * hits) - (3 * strikeouts) + (4 * home_runs)) / games) as bat_stat
+              from BATYEAR natural join statyear
+              WHERE TEAM_NAME='#{params[:team2]}' and SEASON_YEAR='#{params[:year2]}')
+            group by team_name),
+            (select avg(field_stat) as team_field1
+            from
+              (select ((putouts + (1.5 * assists) - (2 * errors) + (3 * double_plays)) / games) as field_stat
+              from FIELDYEAR natural join statyear
+              WHERE TEAM_NAME='#{params[:team2]}' and SEASON_YEAR='#{params[:year2]}')),
+            (select avg(pitch_stat) as team_pitch1
+            from
+              (select ((outs + (5 * shutouts) - (2 * homeruns) - walks + strikeouts) / games) as pitch_stat
+              from PITCHYEAR natural join statyear
+              WHERE TEAM_NAME='#{params[:team2]}' and SEASON_YEAR='#{params[:year2]}'))))
+
     }
 
     @teams = ["#{params[:year1]} #{params[:team1]}", "#{params[:year2]} #{params[:team2]}"]
     @result = exec(query)
 
+    if @result.results.first[4] == @result.results.first[0]
+      @result.results.first[2], @result.results.first[3] = @result.results.first[3], @result.results.first[2]
+    end
 
     query = %{
       SELECT SUM(PitchYear.homeruns), SUM(PitchYear.strikeouts), SUM(PitchYear.shutouts), SUM(PitchYear.walks),
@@ -162,7 +172,83 @@ group by PID having PID='adamsgl01')
   end
 
   def season_sim
+    query = %{
+      SELECT DISTINCT year FROM season
+      ORDER BY year DESC
+    }
 
+    @years = exec(query).results
+  end
+
+  def season_sim_results
+    query = %{
+      select team1, team2, score_low, round(score_low + abs(teamlow_chance - teamhigh_chance)) as score_high, (case when greatest(teamhigh_chance, teamlow_chance) = teamhigh_chance then bigger else smaller end) as winner
+      from
+        (select team1, team2, (least(team1_stat, team2_stat) * dbms_random.value()) as teamlow_chance, (greatest(team1_stat, team2_stat) * dbms_random.value(0,0.5)) as teamhigh_chance,  (round(dbms_random.value() * 8) + 1) as score_low, (case when greatest(team1_stat, team2_stat) = team1_stat then team1 else team2 end) as bigger, (case when least(team1_stat, team2_stat) = team1_stat then team1 else team2 end) as smaller
+        from
+          (select team1, (team_bat - team_field1 - team_pitch1) as team1_stat, team2, (team_bat1 - team_field - team_pitch) as team2_stat
+          from
+            ((select team_name as team1, avg(bat_stat) as team_bat
+            from
+              (select team_name, ((singles + (2 * doubles) + (3 * triples) + (4 * rbi) + (2 * stolen_bases) + (0.5 * hits) - (3 * strikeouts) + (4 * home_runs)) / games) as bat_stat
+              from BATYEAR natural join statyear
+              WHERE SEASON_YEAR=:1)
+            group by team_name) natural join
+            (select team_name as team1, avg(field_stat) as team_field
+            from
+              (select team_name, ((putouts + (1.5 * assists) - (2 * errors) + (3 * double_plays)) / games) as field_stat
+              from FIELDYEAR natural join statyear
+              WHERE SEASON_YEAR=:1)
+            group by team_name) natural join
+            (select team_name as team1, avg(pitch_stat) as team_pitch
+            from
+              (select team_name, ((outs + (5 * shutouts) - (2 * homeruns) - walks + strikeouts) / games) as pitch_stat
+              from PITCHYEAR natural join statyear
+              WHERE SEASON_YEAR=:1)
+            group by team_name)),
+            ((select team_name as team2, avg(bat_stat) as team_bat1
+            from
+              (select team_name, ((singles + (2 * doubles) + (3 * triples) + (4 * rbi) + (2 * stolen_bases) + (0.5 * hits) - (3 * strikeouts) + (4 * home_runs)) / games) as bat_stat
+              from BATYEAR natural join statyear
+              WHERE SEASON_YEAR=:1)
+            group by team_name) natural join
+            (select team_name as team2, avg(field_stat) as team_field1
+            from
+              (select team_name, ((putouts + (1.5 * assists) - (2 * errors) + (3 * double_plays)) / games) as field_stat
+              from FIELDYEAR natural join statyear
+              WHERE SEASON_YEAR=:1)
+            group by team_name) natural join
+            (select team_name as team2, avg(pitch_stat) as team_pitch1
+            from
+              (select team_name, ((outs + (5 * shutouts) - (2 * homeruns) - walks + strikeouts) / games) as pitch_stat
+              from PITCHYEAR natural join statyear
+              WHERE SEASON_YEAR=:1)
+            group by team_name))
+            where team1 != team2))
+    }
+
+    @res = exec(query, params[:season])
+
+    @res.results.each do |x|
+      if x[4] == x[0]
+        x[2], x[3] = x[3], x[2]
+      end
+    end
+
+    @standings = {}
+
+    @res.results.each do |x|
+      @standings[x[0]] = [0, 0] if !@standings[x[0]]
+      @standings[x[1]] = [0, 0] if !@standings[x[1]]
+
+      if x[2] > x[3]
+        @standings[x[0]][0] += 1
+        @standings[x[1]][1] += 1
+      else
+        @standings[x[0]][1] += 1
+        @standings[x[1]][0] += 1
+      end
+    end
   end
 
   def player_value

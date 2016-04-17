@@ -33,6 +33,9 @@ Rails.application.routes.draw do
 
 
   get "season_sim" => "app#season_sim"
+  post "season_sim_results" => "app#season_sim_results"
+
+
   get "player_value" => "app#player_value"
   get "historical_player" => "app#historical_player"
   get "historical_team" => "app#historical_team"

@@ -17,8 +17,8 @@
           <tbody>
             <% @result.results.each do |row| %>
               <tr>
-                <td><%= row[0].to_s %></td>
-                <td><%= row[1].to_s %></td>
+                <td><%= row[2].to_i %></td>
+                <td><%= row[3].to_i %></td>
               </tr>
             <% end %>
           </tbody>
