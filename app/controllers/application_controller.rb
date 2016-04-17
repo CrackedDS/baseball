@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
       end
 
     rescue => e
-      puts "QUERY ERROR: #{t.to_s}"
+      puts "QUERY ERROR: #{e.to_s}"
     ensure
       conn.logoff
     end
@@ -43,7 +43,7 @@ class ApplicationController < ActionController::Base
       conn.exec(query, *args)
       conn.exec("COMMIT")
     rescue => e
-      puts "QUERY ERROR: #{t.to_s}"
+      puts "QUERY ERROR: #{e.to_s}"
     ensure
       conn.logoff
     end

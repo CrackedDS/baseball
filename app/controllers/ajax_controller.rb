@@ -9,7 +9,7 @@ class AjaxController < ApplicationController
       WHERE CONCAT(lower(fname), CONCAT(' ', lower(lname))) like :1 
     }
     @players = exec(query, "%#{params[:term].downcase}%")
-    @players.map! do |player|
+    @players.results.map! do |player|
       {
         label: "#{player[4]} #{player[5]}",
         value: player[0]
@@ -17,7 +17,7 @@ class AjaxController < ApplicationController
     end
 
     respond_to do |format|
-      format.json { render json: {players: @players } }
+      format.json { render json: {players: @players.results } }
     end
   end
 
@@ -29,7 +29,7 @@ class AjaxController < ApplicationController
       WHERE StatYear.team_name = :1
     }
     @players = exec(query, params[:term]).results
-    @players.map! do |player|
+    @players.results.map! do |player|
       {
         label: "#{player[0]} #{player[1]}",
         value: player[2]
@@ -37,7 +37,7 @@ class AjaxController < ApplicationController
     end
 
     respond_to do |format|
-      format.json { render json: {players: @players } }
+      format.json { render json: {players: @players.results } }
     end
   end
 
@@ -48,7 +48,7 @@ class AjaxController < ApplicationController
       WHERE ManagerYear.team_name = :1
     }
     @managers = exec(query, params[:term]).results
-    @managers.map! do |manager|
+    @managers.results.map! do |manager|
       {
         label: "#{manager[0]} #{manager[1]}",
         value: manager[2]
@@ -56,7 +56,7 @@ class AjaxController < ApplicationController
     end
 
     respond_to do |format|
-      format.json { render json: {managers: @managers } }
+      format.json { render json: {managers: @managers.results } }
     end
   end
 
