@@ -5,7 +5,8 @@ $(document).on("page:load ready", function() {
       url: "player_list_team",
       dataType: "json",
       data: {
-        term: this.value
+        term: this.value,
+        filter: $('.radio input:checked').val()
       },
       success: function( data ) {
         console.log(data);
@@ -22,12 +23,13 @@ $(document).on("page:load ready", function() {
       url: "player_list_team",
       dataType: "json",
       data: {
-        term: this.value
+        term: this.value,
+        filter: $('.radio input:checked').val()
       },
       success: function( data ) {
         console.log(data);
         $(".player-select-2").empty();
-        $.each(data.managers, function() {
+        $.each(data.players, function() {
           $(".player-select-2").append($("<option />").val(this.value).text(this.label));
         });
       }
@@ -63,6 +65,41 @@ $(document).on("page:load ready", function() {
         $(".manager-select-2").empty();
         $.each(data.managers, function() {
           $(".manager-select-2").append($("<option />").val(this.value).text(this.label));
+        });
+      }
+    });
+  });
+
+
+  $(".h2h-team-select-1").change(function() {
+    $.ajax({
+      url: "year_list_team",
+      dataType: "json",
+      data: {
+        term: this.value
+      },
+      success: function( data ) {
+        console.log(data);
+        $(".year-select-1").empty();
+        $.each(data.years, function() {
+          $(".year-select-1").append($("<option />").val(this.value).text(this.label));
+        });
+      }
+    });
+  });
+
+  $(".h2h-team-select-2").change(function() {
+    $.ajax({
+      url: "year_list_team",
+      dataType: "json",
+      data: {
+        term: this.value
+      },
+      success: function( data ) {
+        console.log(data);
+        $(".year-select-2").empty();
+        $.each(data.years, function() {
+          $(".year-select-2").append($("<option />").val(this.value).text(this.label));
         });
       }
     });

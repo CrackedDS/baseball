@@ -16,6 +16,7 @@ Rails.application.routes.draw do
   get "player_list" => "ajax#player_list"
   get "player_list_team" => "ajax#player_list_team"
   get "manager_list_team" => "ajax#manager_list_team"
+  get "year_list_team" => "ajax#year_list_team"
 
   # user management
   get "user_management" => "user_management#user_management"
@@ -24,7 +25,13 @@ Rails.application.routes.draw do
 
 
   get "player_impact" => "app#player_impact"
+  post "player_impact_results" => "app#player_impact_results"
+
+
   get "h2h_score" => "app#h2h_score"
+  post "h2h_score_results" => "app#h2h_score_results"
+
+
   get "season_sim" => "app#season_sim"
   get "player_value" => "app#player_value"
   get "historical_player" => "app#historical_player"

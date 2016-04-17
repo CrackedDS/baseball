@@ -15,6 +15,9 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def get_name(pid)
+    exec(%{select (fname || ' ' || lname) as NAME from player where pid = :1}, pid).get("NAME")
+  end
 
   def exec(query, *args)
     conn = OCI8.new('njiang/password@oracle.cise.ufl.edu:1521/orcl')

@@ -4,10 +4,10 @@
   </div>
 
   <div class="panel-body">
-    <%= bootstrap_form_tag url: "login", method: "post" do |f| %>
+    <%= bootstrap_form_tag url: "player_impact_results", method: "post" do |f| %>
       <div class="row centered">
         <%= f.form_group :type, label: { text: "Player type" } do %>
-          <%= f.radio_button :type, 0, label: "Pitchers" %>
+          <%= f.radio_button :type, 0, label: "Pitchers", checked: true %>
           <%= f.radio_button :type, 1, label: "Batters" %>
           <%= f.radio_button :type, 2, label: "Fielders" %>
         <% end %>
@@ -25,11 +25,11 @@
 
       <div class="row centered">
         <div class="col-xs-6">
-          <%= f.select :player1, [], { label: "Player 1:" }, { class: "player-select-1" } %>
+          <%= f.select :player1, [], { label: "Player 1:" }, { class: "player-select-1", required: true } %>
         </div>
 
         <div class="col-xs-6">
-          <%= f.select :player2, [], { label: "Player 2:" }, { class: "player-select-2" } %>
+          <%= f.select :player2, [], { label: "Player 2:" }, { class: "player-select-2", required: true } %>
         </div>
       </div>
       
