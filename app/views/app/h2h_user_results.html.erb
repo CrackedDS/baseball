@@ -17,8 +17,8 @@
           <tbody>
             <% @result.results.each do |row| %>
               <tr>
-                <td><%= row[0].to_i %></td>
-                <td><%= row[1].to_i %></td>
+                <td><%= row[2].to_i %></td>
+                <td><%= row[3].to_i %></td>
               </tr>
             <% end %>
           </tbody>
@@ -26,5 +26,163 @@
       </div>
     </div>
 
+  </div>
+</div>
+
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3> Team Statistics </h3>
+  </div>
+
+  <div class="panel-body">
+    <div class="row">
+      <div class="col-xs-10 col-xs-offset-1">
+        <h4 class="centered">Pitching Statistics</h4>
+        <%= column_chart [
+          {
+            name: @teams[0], data: [
+              ["Home Runs Allowed", @stats1.results[0][0].to_i], ["Strikeouts", @stats1.results[0][1].to_i], ["Shutouts", @stats1.results[0][2].to_i],
+              ["Walks", @stats1.results[0][3].to_i]
+          ]}, 
+          {
+            name: @teams[1], data: [
+              ["Home Runs Allowed", @stats2.results[0][0].to_i], ["Strikeouts", @stats2.results[0][1].to_i], ["Shutouts", @stats2.results[0][2].to_i],
+              ["Walks", @stats2.results[0][3].to_i]
+          ]} 
+        ] %>
+        <table class="table table-bordered datatable-nopaging">
+          <thead>
+            <tr>
+              <th></th>
+              <th><%= @teams[0] %></th>
+              <th><%= @teams[1] %></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Home Runs Allowed</td>
+              <td><%= @stats1.results[0][0].to_i %></td>
+              <td><%= @stats2.results[0][0].to_i %></td>
+            </tr>
+            <tr>
+              <td>Strikeouts</td>
+              <td><%= @stats1.results[0][1].to_i %></td>
+              <td><%= @stats2.results[0][1].to_i %></td>
+            </tr>
+            <tr>
+              <td>Shutouts</td>
+              <td><%= @stats1.results[0][2].to_i %></td>
+              <td><%= @stats2.results[0][2].to_i %></td>
+            </tr>
+            <tr>
+              <td>Walks</td>
+              <td><%= @stats1.results[0][3].to_i %></td>
+              <td><%= @stats2.results[0][3].to_i %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-10 col-xs-offset-1">
+        <h4 class="centered">Fielding Statistics</h4>
+        <%= column_chart [
+          {
+            name: @teams[0], data: [
+              ["Putouts", @stats1.results[0][4].to_i], ["Assists", @stats1.results[0][5].to_i], ["Errors", @stats1.results[0][6].to_i],
+              ["Double Plays", @stats1.results[0][7].to_i]
+          ]}, 
+          {
+            name: @teams[1], data: [
+              ["Putouts", @stats2.results[0][4].to_i], ["Assists", @stats2.results[0][5].to_i], ["Errors", @stats2.results[0][6].to_i],
+              ["Double Plays", @stats2.results[0][7].to_i]
+          ]} 
+        ] %>
+        <table class="table table-bordered datatable-nopaging">
+          <thead>
+            <tr>
+              <th></th>
+              <th><%= @teams[0] %></th>
+              <th><%= @teams[1] %></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Putouts</td>
+              <td><%= @stats1.results[0][4].to_i %></td>
+              <td><%= @stats2.results[0][4].to_i %></td>
+            </tr>
+            <tr>
+              <td>Assists</td>
+              <td><%= @stats1.results[0][5].to_i %></td>
+              <td><%= @stats2.results[0][5].to_i %></td>
+            </tr>
+            <tr>
+              <td>Errors</td>
+              <td><%= @stats1.results[0][6].to_i %></td>
+              <td><%= @stats2.results[0][6].to_i %></td>
+            </tr>
+            <tr>
+              <td>Double Plays</td>
+              <td><%= @stats1.results[0][6].to_i %></td>
+              <td><%= @stats2.results[0][6].to_i %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-xs-10 col-xs-offset-1">
+        <h4 class="centered">Batting Statistics</h4>
+        <%= column_chart [
+          {
+            name: @teams[0], data: [
+              ["Home Runs", @stats1.results[0][7].to_i], ["Hits", @stats1.results[0][8].to_i], ["RBI", @stats1.results[0][9].to_i],
+              ["Strikeouts", @stats1.results[0][10].to_i]
+          ]}, 
+          {
+            name: @teams[1], data: [
+              ["Home Runs", @stats2.results[0][7].to_i], ["Hits", @stats2.results[0][8].to_i], ["RBI", @stats2.results[0][9].to_i],
+              ["Strikeouts", @stats2.results[0][10].to_i]
+          ]} 
+        ] %>
+        <table class="table table-bordered datatable-nopaging">
+          <thead>
+            <tr>
+              <th></th>
+              <th><%= @teams[0] %></th>
+              <th><%= @teams[1] %></th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>Homeruns</td>
+              <td><%= @stats1.results[0][7].to_i %></td>
+              <td><%= @stats2.results[0][7].to_i %></td>
+            </tr>
+            <tr>
+              <td>Hits</td>
+              <td><%= @stats1.results[0][8].to_i %></td>
+              <td><%= @stats2.results[0][8].to_i %></td>
+            </tr>
+            <tr>
+              <td>Rbi</td>
+              <td><%= @stats1.results[0][9].to_i %></td>
+              <td><%= @stats2.results[0][9].to_i %></td>
+            </tr>
+            <tr>
+              <td>Strikeouts</td>
+              <td><%= @stats1.results[0][10].to_i %></td>
+              <td><%= @stats2.results[0][10].to_i %></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
   </div>
 </div>
