@@ -15,7 +15,6 @@ Rails.application.routes.draw do
   # ajax requests
   get "player_list" => "ajax#player_list"
   get "player_list_team" => "ajax#player_list_team"
-  get "player_list_team_salary" => "ajax#player_list_team_salary"
   get "manager_list_team" => "ajax#manager_list_team"
   get "year_list_team" => "ajax#year_list_team"
 

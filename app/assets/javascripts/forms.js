@@ -36,41 +36,6 @@ $(document).on("page:load ready", function() {
     });
   });
 
-  $(".team-sal-select-1").change(function() {
-    $.ajax({
-      url: "player_list_team_salary",
-      dataType: "json",
-      data: {
-        term: this.value,
-        filter: $('.radio input:checked').val()
-      },
-      success: function( data ) {
-        console.log(data);
-        $(".player-select-1").empty();
-        $.each(data.players, function() {
-          $(".player-select-1").append($("<option />").val(this.value).text(this.label));
-        });
-      }
-    });
-  });
-
-  $(".team-sal-select-2").change(function() {
-    $.ajax({
-      url: "player_list_team_salary",
-      dataType: "json",
-      data: {
-        term: this.value,
-        filter: $('.radio input:checked').val()
-      },
-      success: function( data ) {
-        console.log(data);
-        $(".player-select-2").empty();
-        $.each(data.players, function() {
-          $(".player-select-2").append($("<option />").val(this.value).text(this.label));
-        });
-      }
-    });
-  });
 
   $(".team-m-select-1").change(function() {
     $.ajax({
