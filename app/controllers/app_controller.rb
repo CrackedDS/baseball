@@ -1,19 +1,31 @@
 class AppController < ApplicationController
   before_filter :authenticate_user
 
-  def home; end
+  def home
+    @total = exec(%{
+      select sum(num_rows) from all_tables
+        where table_name IN 
+        ('PLAYER', 'APPUSER', 'MANAGER', 'SEASON', 'TEAM', 'MANAGERYEAR', 'USERTEAM', 
+          'PLAYERUSERTEAM', 'STATYEAR', 'PITCHYEAR', 'FIELDYEAR', 'BATYEAR')
+      })
+
+    @res = exec(%{
+      select table_name, num_rows from all_tables
+        where table_name IN 
+        ('PLAYER', 'APPUSER', 'MANAGER', 'SEASON', 'TEAM', 'MANAGERYEAR', 'USERTEAM', 
+          'PLAYERUSERTEAM', 'STATYEAR', 'PITCHYEAR', 'FIELDYEAR', 'BATYEAR')
+      })
+
+  end
 
   def test
     @res = exec(%{
-select avg(sing) singles, avg(doub) doubles, avg(tri) triples,avg(rbi) rbi , avg(stol) stolenbases, avg(hit) hits , avg(strike) strikeouts, avg(hmruns) homeruns from(
-select PID,sum(singles) sing, sum(doubles) doub, sum(triples) tri, sum (rbi) rbi, sum (stolen_bases) stol , sum(hits) hit, sum(home_runs) hmruns,sum(strikeouts) strike  from BATYEAR 
-group by PID) union
-
-select avg(sing) singles, avg(doub) doubles, avg(tri) triples,avg(rbi) rbi , avg(stol) stolenbases, avg(hit) hits , avg(strike) strikeouts, avg(hmruns) homeruns from(
-select PID,sum(singles) sing, sum(doubles) doub, sum(triples) tri, sum (rbi) rbi, sum (stolen_bases) stol , sum(hits) hit, sum(home_runs) hmruns,sum(strikeouts) strike  from BATYEAR
-group by PID having PID='adamsgl01') 
+      select table_name, num_rows from all_tables
+        where table_name IN 
+        ('PLAYER', 'APPUSER', 'MANAGER', 'SEASON', 'TEAM', 'MANAGERYEAR', 'USERTEAM', 
+          'PLAYERUSERTEAM', 'STATYEAR', 'PITCHYEAR', 'FIELDYEAR', 'BATYEAR')
       })
-
+    # byebug
   end
 
   def season_sim

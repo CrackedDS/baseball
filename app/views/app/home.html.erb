@@ -1,1 +1,24 @@
-Welcome
+<h4>Tuple Counts</h4>
+
+<h5>Total tuples: <%= @total.results.first[0] %></h5>
+<table class="table table-bordered datatable">
+  <thead>
+    <tr>
+      <% @res.columns.each do |col| %>
+        <th><%= col %></th>
+      <% end %>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @res.results.each do |row| %>
+      <tr>
+        <% row.each do |td| %>
+          <td><%= td %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+Data retrieved from the <a href="http://www.seanlahman.com/baseball-archive/statistics/">Lahman Baseball Database</a>.
