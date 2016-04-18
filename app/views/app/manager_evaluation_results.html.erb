@@ -1,0 +1,42 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3> Manager Results </h3>
+  </div>
+
+  <div class="panel-body">
+
+    <table class="table table-bordered datatable-nopaging">
+      <thead>
+        <tr>
+          <th>Manager</th>
+          <th>Pitcher Winrate</th>
+          <th>Manager Winrate</th>
+          <th>Performance Index</th>
+          <th>Average Wins</th>
+          <th>Average Losses</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr>
+          <td><%= @results1[0] %></td>
+          <td><%= number_to_percentage @results1[1] * 100 %></td>
+          <td><%= number_to_percentage @results1[2] * 100 %></td>
+          <td><%= @results1[3].round(3) %></td>
+          <td><%= @results1[4].round(3) %></td>
+          <td><%= @results1[5].round(3) %></td>
+        </tr>
+        <tr>
+          <td><%= @results2[0] %></td>
+          <td><%= number_to_percentage @results2[1] * 100 %></td>
+          <td><%= number_to_percentage @results2[2] * 100 %></td>
+          <td><%= @results2[3].round(3) %></td>
+          <td><%= @results2[4].round(3) %></td>
+          <td><%= @results2[5].round(3) %></td>
+        </tr>
+      </tbody>
+    </table>
+
+  <p>Pitcher winrate refers to the average career winrate of pitchers who played under the manager (including seasons not played under the manager). Performance index measures how well a manager performed given who played for him. </p>
+  </div>
+</div>

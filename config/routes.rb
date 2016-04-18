@@ -31,15 +31,18 @@ Rails.application.routes.draw do
   get "h2h_score" => "app#h2h_score"
   post "h2h_score_results" => "app#h2h_score_results"
 
+  get "h2h_user" => "app#h2h_user"
+  post "h2h_user_results" => "app#h2h_user_results"
+
 
   get "season_sim" => "app#season_sim"
   post "season_sim_results" => "app#season_sim_results"
 
 
   get "player_value" => "app#player_value"
-  get "historical_player" => "app#historical_player"
-  get "historical_team" => "app#historical_team"
+
   get "manager_evaluation" => "app#manager_evaluation"
+  post "manager_evaluation_results" => "app#manager_evaluation_results"
 
   get "test" => "app#test"
 

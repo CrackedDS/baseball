@@ -171,6 +171,79 @@ group by PID having PID='adamsgl01')
     @stats2 = exec(query, params[:team2], params[:year2])
   end
 
+  def h2h_user
+    query = %{
+      SELECT user_email, name FROM UserTeam
+    }
+
+    @teams = exec(query).results
+    @teams.map!{|x| "#{x.second} (#{x.first})"}.sort!
+  end  
+
+  def h2h_user_results
+    email1 = params[:team1].scan(/\(\S+\)/)[0][1..-2]
+    email2 = params[:team2].scan(/\(\S+\)/)[0][1..-2]
+    team1 = params[:team1].scan(/\A.+\(/)[0][0..-3]
+    team2 = params[:team2].scan(/\A.+\(/)[0][0..-3]
+
+    query = %{
+      select (team_bat - team_field1 - team_pitch1), (team_bat1 - team_field - team_pitch)
+       from
+       (select avg(bat_stat) team_bat, avg(field_stat) team_field ,avg(pitch_stat) team_pitch from
+        (select ((singles + (2 * doubles) + (3 * triples) + (4 * rbi) + (2 * stolen_bases) + (0.5 * hits) - (3 * strikeouts) + (4 * home_runs)) / games) as bat_stat
+          from BATYEAR natural join statyear
+          WHERE PID IN (select PID from PLAYERUSERTEAM PL where PL.name = '#{team1}' and PL.user_email='#{email1}')),    
+          (select ((putouts + (1.5 * assists) - (2 * errors) + (3 * double_plays)) / games) as field_stat
+          from FIELDYEAR natural join statyear
+          WHERE PID IN (select PID from PLAYERUSERTEAM PL where PL.name = '#{team1}' and PL.user_email='#{email1}')),
+          (select ((outs + (5 * shutouts) - (2 * homeruns) - walks + strikeouts) / games) as pitch_stat
+          from PITCHYEAR natural join statyear
+          WHERE PID IN (select PID from PLAYERUSERTEAM PL where PL.name = '#{team1}' and PL.user_email='#{email1}'))),
+         (select avg(bat_stat1) team_bat1, avg(field_stat1) team_field1,avg(pitch_stat1) team_pitch1 from
+        (select ((singles + (2 * doubles) + (3 * triples) + (4 * rbi) + (2 * stolen_bases) + (0.5 * hits) - (3 * strikeouts) + (4 * home_runs)) / games) as bat_stat1
+          from BATYEAR natural join statyear
+          WHERE PID IN (select PID from PLAYERUSERTEAM PL where PL.name = '#{team2}' and PL.user_email='#{email2}')),    
+          (select ((putouts + (1.5 * assists) - (2 * errors) + (3 * double_plays)) / games) as field_stat1
+          from FIELDYEAR natural join statyear
+          WHERE PID IN (select PID from PLAYERUSERTEAM PL where PL.name = '#{team2}' and PL.user_email='#{email2}')),
+          (select ((outs + (5 * shutouts) - (2 * homeruns) - walks + strikeouts) / games) as pitch_stat1
+          from PITCHYEAR natural join statyear
+          WHERE PID IN (select PID from PLAYERUSERTEAM PL where PL.name = '#{team2}' and PL.user_email='#{email2}')))
+
+    }
+
+    @teams = ["#{params[:team1]}", "#{params[:team2]}"]
+    @result = exec(query)
+
+    # if @result.results.first[4] == @result.results.first[0]
+    #   @result.results.first[2], @result.results.first[3] = @result.results.first[3], @result.results.first[2]
+    # end
+
+    # query = %{
+    #   SELECT SUM(PitchYear.homeruns), SUM(PitchYear.strikeouts), SUM(PitchYear.shutouts), SUM(PitchYear.walks),
+    #          SUM(FieldYear.putouts), SUM(FieldYear.assists), SUM(FieldYear.errors), SUM(FieldYear.double_plays),
+    #          SUM(BatYear.home_runs), SUM(BatYear.hits), SUM(BatYear.rbi), SUM(BatYear.strikeouts)
+    #   FROM statyear
+    #   LEFT JOIN PitchYear ON 
+    #     StatYear.pid = PitchYear.pid AND
+    #     StatYear.season_year = PitchYear.season_year AND
+    #     StatYear.stint = PitchYear.stint
+    #   LEFT JOIN BatYear ON
+    #     StatYear.pid = BatYear.pid AND
+    #     StatYear.season_year = BatYear.season_year AND
+    #     StatYear.stint = BatYear.stint
+    #   LEFT JOIN FieldYear ON
+    #     StatYear.pid = FieldYear.pid AND
+    #     StatYear.season_year = FieldYear.season_year AND
+    #     StatYear.stint = FieldYear.stint
+
+    #   WHERE StatYear.team_name = :1 AND StatYear.season_year = :2
+    # }
+
+    # @stats1 = exec(query, params[:team1], params[:year1])
+    # @stats2 = exec(query, params[:team2], params[:year2])
+  end
+
   def season_sim
     query = %{
       SELECT DISTINCT year FROM season
@@ -276,6 +349,32 @@ group by PID having PID='adamsgl01')
     @teams = exec(query).results
     @teams.map!(&:first).sort!
 
+  end
+
+  def manager_evaluation_results
+    query = %{
+      SELECT (fname || ' ' || lname), pitcher_winrate, manager_winrate, manager_winrate / pitcher_winrate, avgw, avgl
+      FROM
+      (SELECT 
+        CASE WHEN (SUM(wins) + SUM(losses)) = 0 THEN 0 
+        ELSE SUM(wins) / (SUM(wins) + SUM(losses)) END pitcher_winrate
+      FROM PitchYear p
+      WHERE pid IN 
+        (SELECT DISTINCT p.pid FROM ManagerYear m 
+        INNER JOIN PitchYear p ON m.team_name= p.team_name and m.season_year = p.season_year
+        WHERE m.mid = :1))
+      ,
+      (
+        SELECT fname, lname, (SUM(wins) / (SUM(wins) + SUM(losses))) manager_winrate, AVG(wins) avgw, AVG(losses) avgl
+        FROM ManagerYear
+        INNER JOIN Manager on ManagerYear.mid = Manager.mid
+        WHERE ManagerYear.mid = :1
+        GROUP BY fname, lname
+      )
+    }
+
+    @results1 = exec(query, params[:manager1]).results.first
+    @results2 = exec(query, params[:manager2]).results.first  
   end
 
 end

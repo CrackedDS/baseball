@@ -4,7 +4,7 @@
   </div>
 
   <div class="panel-body">
-    <%= bootstrap_form_tag url: "login", method: "post" do |f| %>
+    <%= bootstrap_form_tag url: "manager_evaluation_results", method: "post" do |f| %>
       <div class="row centered">
         <div class="col-xs-6">
           <%= f.select :team1, @teams, { label: "Team 1:", :prompt => "Select a team" }, { class: "team-m-select-1" } %>
