@@ -15,6 +15,7 @@ Rails.application.routes.draw do
   # ajax requests
   get "player_list" => "ajax#player_list"
   get "player_list_team" => "ajax#player_list_team"
+  get "player_list_team_salary" => "ajax#player_list_team_salary"
   get "manager_list_team" => "ajax#manager_list_team"
   get "year_list_team" => "ajax#year_list_team"
 
@@ -24,22 +25,24 @@ Rails.application.routes.draw do
   post "create_team" => "user_management#create_team"
 
 
-  get "player_impact" => "app#player_impact"
-  post "player_impact_results" => "app#player_impact_results"
+  
 
 
-  get "h2h_score" => "app#h2h_score"
-  post "h2h_score_results" => "app#h2h_score_results"
+  get "h2h_score" => "team#h2h_score"
+  post "h2h_score_results" => "team#h2h_score_results"
 
-  get "h2h_user" => "app#h2h_user"
-  post "h2h_user_results" => "app#h2h_user_results"
+  get "h2h_user" => "team#h2h_user"
+  post "h2h_user_results" => "team#h2h_user_results"
 
 
   get "season_sim" => "app#season_sim"
   post "season_sim_results" => "app#season_sim_results"
 
+  get "player_impact" => "player#player_impact"
+  post "player_impact_results" => "player#player_impact_results"
 
-  get "player_value" => "app#player_value"
+  get "player_value" => "player#player_value"
+  post "player_value_results" => "player#player_value_results"
 
   get "manager_evaluation" => "app#manager_evaluation"
   post "manager_evaluation_results" => "app#manager_evaluation_results"

@@ -50,6 +50,35 @@ class AjaxController < ApplicationController
     end
   end
 
+  def player_list_team_salary
+    filter_team = "PitchYear" if params[:filter] == "0"
+    filter_team = "BatYear" if params[:filter] == "1"
+    filter_team = "FieldYear" if params[:filter] == "2"
+
+    query = %{
+      SELECT DISTINCT player.fname, player.lname, player.pid from player 
+      INNER JOIN StatYear on player.pid = StatYear.pid
+      INNER JOIN #{filter_team} on StatYear.pid = #{filter_team}.pid AND
+        StatYear.season_year = #{filter_team}.season_year AND
+        StatYear.stint = #{filter_team}.stint
+      WHERE StatYear.team_name = :1 AND
+      StatYear.salary IS NOT NULL
+      ORDER BY player.lname ASC
+    }
+
+    @players = exec(query, params[:term])
+    @players.results.map! do |player|
+      {
+        label: "#{player[0]} #{player[1]}",
+        value: player[2]
+      }
+    end
+
+    respond_to do |format|
+      format.json { render json: {players: @players.results } }
+    end
+  end
+
   def manager_list_team
     query = %{
       SELECT DISTINCT manager.fname, manager.lname, manager.mid from manager 

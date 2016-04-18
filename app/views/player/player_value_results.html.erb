@@ -1,0 +1,13 @@
+<div class="panel panel-info">
+  <div class="panel-heading">
+    <h3> Player Value Results </h3>
+  </div>
+
+  <div class="panel-body">
+    <%= column_chart [
+      {name: @name1, data: [["Batting", @impact1.get("BAT_STAT")], ["Fielding", @impact1.get("FIELD_STAT")], ["Pitching", @impact1.get("PITCH_STAT")]]}, 
+      {name: @name2, data: [["Batting", @impact2.get("BAT_STAT")], ["Fielding", @impact2.get("FIELD_STAT")], ["Pitching", @impact2.get("PITCH_STAT")]]} 
+    ] %>
+
+  </div>
+</div>
